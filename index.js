@@ -9,4 +9,8 @@ if (!romPath) {
   process.exit(1);
 }
 
-const nes = Nes.loadRom(romPath);
+Nes.loadRom(romPath)
+  .then((nes) => {
+    console.log('nes', nes);
+    nes.start();
+  });

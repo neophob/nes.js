@@ -17,7 +17,6 @@ test('should read file, read croom.nes', t => {
       t.is(romMetaData.trainerIncluded, false);
       const romData = result.romData;
       t.is(romData.programRom.length, romMetaData.programRomPages * 16384);
-      t.is(romData.programRam.length, romMetaData.programRamPages * 8192);
       t.is(romData.characterRom.length, romMetaData.characterRomPages * 8192);
     });
 });
@@ -51,7 +50,6 @@ test('should read file, read PwnAdventureZ-csaw-withkeys.nes', t => {
       t.is(romMetaData.trainerIncluded, false);
       const romData = result.romData;
       t.is(romData.programRom.length, romMetaData.programRomPages * 16384);
-      t.is(romData.programRam.length, romMetaData.programRamPages * 8192);
-      t.is(romData.characterRom.length, romMetaData.characterRomPages * 8192);
+      t.is(romData.characterRom, undefined);
     });
 });
