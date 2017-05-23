@@ -1,0 +1,17 @@
+{
+  "name": "nes.js",
+  "version": "1.0.0",
+  "description": "NES Emu",
+  "main": "index.js",
+  "scripts": {
+    "test": "ava --verbose"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "ava": "^0.19.1"
+  },
+  "dependencies": {
+    "debug": "^2.6.8"
+  }
+}
