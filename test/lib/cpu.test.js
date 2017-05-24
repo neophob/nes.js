@@ -34,9 +34,38 @@ test('should push and pop 16bit data to/from the stack', t => {
 });
 
 test('should calculate the correct stack pointer address', t => {
-  t.plan(1);
   t.context.pushStack16(0xffaa);
   t.context.pushStack8(0);
   t.context.pushStack16(0);
   t.is(t.context.registerSP, 0x100 + 5);
+});
+
+test('should transform register P, 0x00', t => {
+  t.plan(9);
+  const flags = Cpu.updateRegisterP(0);
+  t.is(flags.carry, false);
+  t.is(flags.zero, false);
+  t.is(flags.interrupt, false);
+  t.is(flags.decimal, false);
+  t.is(flags.unused1, false);
+  t.is(flags.unused2, false);
+  t.is(flags.overflow, false);
+  t.is(flags.negative, false);
+  t.context.registerP = flags;
+  t.is(t.context.getRegisterP(), 0);
+});
+
+test('should transform register P, 0xff', t => {
+  t.plan(9);
+  const flags = Cpu.updateRegisterP(0xff);
+  t.is(flags.carry, true);
+  t.is(flags.zero, true);
+  t.is(flags.interrupt, true);
+  t.is(flags.decimal, true);
+  t.is(flags.unused1, true);
+  t.is(flags.unused2, true);
+  t.is(flags.overflow, true);
+  t.is(flags.negative, true);
+  t.context.registerP = flags;
+  t.is(t.context.getRegisterP(), 0xff);
 });
