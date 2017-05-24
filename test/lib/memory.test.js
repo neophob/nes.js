@@ -7,34 +7,56 @@ test.beforeEach(t => {
   t.context = new Memory();
 });
 
-test('should push and pop 8bit data to/from the stack', t => {
-  t.plan(2);
-  t.context.pushStack8(0xfff);
-  const result = t.context.popStack8();
-  t.is(result, 0xff);
-  t.is(t.context.stackPointer,0);
-});
-
-test('should push and pop 16bit data to/from the stack', t => {
-  t.plan(2);
-  t.context.pushStack16(0xffaa);
-  const result = t.context.popStack16();
-  t.is(result, 0xffaa);
-  t.is(t.context.stackPointer,0);
-});
-
-test('should calculate the correct stack pointer address', t => {
+test('should write and read from memory (8b, 0x00)', t => {
   t.plan(1);
-  t.context.pushStack16(0xffaa);
-  t.context.pushStack8(0);
-  t.context.pushStack16(0);
-  t.is(t.context.stackPointer,5);
+  const value = 0x00;
+  const offset = 0x4444;
+  t.context.write8(offset, value);
+  const result = t.context.read8(offset);
+  t.is(result, value);
 });
 
-test('should read from memory (after push data to stack)', t => {
+test('should write and read from memory (8b, 0x12)', t => {
+  t.plan(1);
+  const value = 0x12;
+  const offset = 0x4444;
+  t.context.write8(offset, value);
+  const result = t.context.read8(offset);
+  t.is(result, value);
+});
+
+test('should write and read from memory (8b, 0xff)', t => {
+  t.plan(1);
+  const value = 0xFF;
+  const offset = 0x4444;
+  t.context.write8(offset, value);
+  const result = t.context.read8(offset);
+  t.is(result, value);
+});
+
+test('should write and read from memory (16b, 0x0000)', t => {
+  t.plan(1);
+  const value = 0x0000;
+  const offset = 0x4448;
+  t.context.write16(offset, value);
+  const result = t.context.read16(offset);
+  t.is(result, value);
+});
+
+test('should write and read from memory (16b, 0x1234)', t => {
   t.plan(1);
   const value = 0x1234;
-  t.context.pushStack16(value);
-  const result = t.context.read16(0x0100);
+  const offset = 0x4448;
+  t.context.write16(offset, value);
+  const result = t.context.read16(offset);
+  t.is(result, value);
+});
+
+test('should write and read from memory (16b, 0xffff)', t => {
+  t.plan(1);
+  const value = 0xffff;
+  const offset = 0x4448;
+  t.context.write16(offset, value);
+  const result = t.context.read16(offset);
   t.is(result, value);
 });
