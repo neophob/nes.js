@@ -11,6 +11,10 @@ if (!romPath) {
 
 Nes.loadRom(romPath)
   .then((nes) => {
-    console.log('nes', nes);
     nes.start();
+  })
+  .catch((error) => {
+    console.log('loading rom failed', error.message);
   });
+
+setTimeout(() => {}, 2000);

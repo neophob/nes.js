@@ -4,7 +4,8 @@
   "description": "NES Emu",
   "main": "index.js",
   "scripts": {
-    "test": "ava --verbose"
+    "test": "ava --verbose",
+    "start": "DEBUG=* node index.js rom/croom.nes"
   },
   "author": "",
   "license": "ISC",

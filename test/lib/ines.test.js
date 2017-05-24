@@ -6,7 +6,7 @@ import ines from '../../lib/ines';
 test('should read file, read croom.nes', t => {
   return ines.loadRom('./rom/croom.nes')
     .then((result) => {
-      const romMetaData = result.romMetaData;
+      const romMetaData = result.metaData;
       console.log(romMetaData);
       t.is(romMetaData.programRomPages, 1);
       t.is(romMetaData.programRamPages, 1);
@@ -15,7 +15,7 @@ test('should read file, read croom.nes', t => {
       t.is(romMetaData.mirrorType, 1);
       t.is(romMetaData.batteryBackedPrgRam, false);
       t.is(romMetaData.trainerIncluded, false);
-      const romData = result.romData;
+      const romData = result.data;
       t.is(romData.programRom.length, romMetaData.programRomPages * 16384);
       t.is(romData.characterRom.length, romMetaData.characterRomPages * 8192);
     });
@@ -24,7 +24,7 @@ test('should read file, read croom.nes', t => {
 test('should read file, read thwaite.nes', t => {
   return ines.loadRom('./rom/thwaite.nes')
     .then((result) => {
-      const romMetaData = result.romMetaData;
+      const romMetaData = result.metaData;
       console.log(romMetaData);
       t.is(romMetaData.programRomPages, 1);
       t.is(romMetaData.programRamPages, 1);
@@ -39,7 +39,7 @@ test('should read file, read thwaite.nes', t => {
 test('should read file, read PwnAdventureZ-csaw-withkeys.nes', t => {
   return ines.loadRom('./rom/PwnAdventureZ-csaw-withkeys.nes')
     .then((result) => {
-      const romMetaData = result.romMetaData;
+      const romMetaData = result.metaData;
       console.log(romMetaData);
       t.is(romMetaData.programRomPages, 16);
       t.is(romMetaData.programRamPages, 1);
@@ -48,7 +48,7 @@ test('should read file, read PwnAdventureZ-csaw-withkeys.nes', t => {
       t.is(romMetaData.mirrorType, 0);
       t.is(romMetaData.batteryBackedPrgRam, true);
       t.is(romMetaData.trainerIncluded, false);
-      const romData = result.romData;
+      const romData = result.data;
       t.is(romData.programRom.length, romMetaData.programRomPages * 16384);
       t.is(romData.characterRom, undefined);
     });
