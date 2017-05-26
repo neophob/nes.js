@@ -69,3 +69,25 @@ test('should transform register P, 0xff', t => {
   t.context.registerP = flags;
   t.is(t.context.getRegisterP(), 0xff);
 });
+
+
+test('should set zero and negative flags, 0x00', t => {
+  t.context.setZeroAndNegativeFlag(0);
+  const flags = t.context.registerP;
+  t.is(flags.zero, true);
+  t.is(flags.negative, false);
+});
+
+test('should set zero and negative flags, 0x01', t => {
+  t.context.setZeroAndNegativeFlag(0x01);
+  const flags = t.context.registerP;
+  t.is(flags.zero, false);
+  t.is(flags.negative, false);
+});
+
+test('should set zero and negative flags, 0xff', t => {
+  t.context.setZeroAndNegativeFlag(0xff);
+  const flags = t.context.registerP;
+  t.is(flags.zero, false);
+  t.is(flags.negative, true);
+});
