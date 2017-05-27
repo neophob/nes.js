@@ -91,3 +91,23 @@ test('should set zero and negative flags, 0xff', t => {
   t.is(flags.zero, false);
   t.is(flags.negative, true);
 });
+
+test('should not pageDiffer, 0x0000/0x0000', t => {
+  const result = Cpu.pagesDiffer(0x0000, 0x0000);
+  t.is(result, false);
+});
+
+test('should not pageDiffer, 0x00ff/0x00ff', t => {
+  const result = Cpu.pagesDiffer(0x00ff, 0x00ff);
+  t.is(result, false);
+});
+
+test('should not pageDiffer, 0x01ff/0x00ff', t => {
+  const result = Cpu.pagesDiffer(0x00ff, 0x01ff);
+  t.is(result, true);
+});
+
+test('should not pageDiffer, 0x01ff/0x01ff', t => {
+  const result = Cpu.pagesDiffer(0x01ff, 0x01ff);
+  t.is(result, false);
+});
