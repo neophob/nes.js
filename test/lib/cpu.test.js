@@ -111,3 +111,18 @@ test('should not pageDiffer, 0x01ff/0x01ff', t => {
   const result = Cpu.pagesDiffer(0x01ff, 0x01ff);
   t.is(result, false);
 });
+
+test('should read correct IRQ value when calling BRK', t => {
+  t.context.memory.write8(0xfffe, 0x10);
+  t.context.memory.write8(0xffff, 0x50);
+  t.context.BRK();
+  const result = t.context.registerPC;
+  t.is(result, 0x5010);
+});
+
+test('should read correct IRQ value when calling BRK', t => {
+  t.context.memory.write16(0xfffe, 0x5010);
+  t.context.BRK();
+  const result = t.context.registerPC;
+  t.is(result, 0x5010);
+});

@@ -14,7 +14,7 @@ Nes.loadRom(romPath)
     nes.start();
   })
   .catch((error) => {
-    console.log('loading rom failed', error.message);
+    console.log('loading rom failed', error);
   });
 
 setTimeout(() => {}, 2000);
