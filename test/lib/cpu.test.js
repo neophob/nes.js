@@ -93,22 +93,22 @@ test('should set zero and negative flags, 0xff', t => {
 });
 
 test('should not pageDiffer, 0x0000/0x0000', t => {
-  const result = Cpu.pagesDiffer(0x0000, 0x0000);
+  const result = t.context.pagesDiffer(0x0000, 0x0000);
   t.is(result, false);
 });
 
 test('should not pageDiffer, 0x00ff/0x00ff', t => {
-  const result = Cpu.pagesDiffer(0x00ff, 0x00ff);
+  const result = t.context.pagesDiffer(0x00ff, 0x00ff);
   t.is(result, false);
 });
 
 test('should not pageDiffer, 0x01ff/0x00ff', t => {
-  const result = Cpu.pagesDiffer(0x00ff, 0x01ff);
+  const result = t.context.pagesDiffer(0x00ff, 0x01ff);
   t.is(result, true);
 });
 
 test('should not pageDiffer, 0x01ff/0x01ff', t => {
-  const result = Cpu.pagesDiffer(0x01ff, 0x01ff);
+  const result = t.context.pagesDiffer(0x01ff, 0x01ff);
   t.is(result, false);
 });
 
@@ -116,13 +116,71 @@ test('should read correct IRQ value when calling BRK', t => {
   t.context.memory.write8(0xfffe, 0x10);
   t.context.memory.write8(0xffff, 0x50);
   t.context.BRK();
-  const result = t.context.registerPC;
-  t.is(result, 0x5010);
+  t.is(t.context.registerPC, 0x5010);
 });
 
 test('should read correct IRQ value when calling BRK', t => {
   t.context.memory.write16(0xfffe, 0x5010);
   t.context.BRK();
-  const result = t.context.registerPC;
-  t.is(result, 0x5010);
+  t.is(t.context.registerPC, 0x5010);
+});
+
+test('should increase X register (INX)', t => {
+  t.context.registerX = 0;
+  t.context.INX();
+  t.is(t.context.registerX, 1);
+});
+
+test('should increase X register (INX) - overflow', t => {
+  t.context.registerX = 255;
+  t.context.INX();
+  t.is(t.context.registerX, 0);
+  t.is(t.context.registerP.zero, true);
+  t.is(t.context.registerP.negative, false);
+});
+
+test('should increase Y register (INY)', t => {
+  t.context.registerY = 0;
+  t.context.INY();
+  t.is(t.context.registerY, 1);
+});
+
+test('should increase Y register (INY) - overflow', t => {
+  t.context.registerY = 255;
+  t.context.INY();
+  t.is(t.context.registerY, 0);
+  t.is(t.context.registerP.zero, true);
+  t.is(t.context.registerP.negative, false);
+});
+
+test('should decrease X register (DEX)', t => {
+  t.context.registerX = 1;
+  t.context.DEX();
+  t.is(t.context.registerX, 0);
+  t.is(t.context.registerP.zero, true);
+  t.is(t.context.registerP.negative, false);
+});
+
+test('should decrease X register (DEX) - overflow', t => {
+  t.context.registerX = 0;
+  t.context.DEX();
+  t.is(t.context.registerX, 255);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, true);
+});
+
+test('should decrease Y register (DEY)', t => {
+  t.context.registerY = 1;
+  t.context.DEY();
+  t.is(t.context.registerY, 0);
+  t.is(t.context.registerP.zero, true);
+  t.is(t.context.registerP.negative, false);
+});
+
+test('should decrease Y register (DEY) - overflow', t => {
+  t.context.registerY = 0;
+  t.context.DEY();
+  t.is(t.context.registerY, 255);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, true);
 });
