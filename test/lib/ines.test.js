@@ -18,6 +18,9 @@ test('should read file, read croom.nes', t => {
       const romData = result.data;
       t.is(romData.programRom.length, romMetaData.programRomPages * 16384);
       t.is(romData.characterRom.length, romMetaData.characterRomPages * 8192);
+      const romLength = romData.programRom.length;
+      t.is(romData.programRom[romLength-3], 192);
+      t.is(romData.programRom[romLength-4], 218);
     });
 });
 

@@ -106,7 +106,7 @@ test('should write / read from remapped memory', t => {
 });
 
 test('should load 0x04000 size rom file', t => {
-  t.plan(5);
+  t.plan(6);
   const definedState = 0x88;
   const programMemory = Buffer.alloc(16384).fill(definedState);
   const rom = {
@@ -122,6 +122,7 @@ test('should load 0x04000 size rom file', t => {
   t.is(memory.length, 65536);
   t.is(memory[0x7fff] === definedState, false);
   t.is(memory[0x8000], definedState);
+  t.is(typeof memory[0x8000], 'number');
   t.is(memory[0x8000 + 0x4000], definedState);
   t.is(memory[0xffff], definedState);
 });
