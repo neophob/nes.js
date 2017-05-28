@@ -125,6 +125,22 @@ test('should read correct IRQ value when calling BRK', t => {
   t.is(t.context.registerPC, 0x5010);
 });
 
+test('should branch when zero flag is NOT set (BNE)', t => {
+  t.context.registerPC = 0;
+  t.context.registerP.zero = false;
+  const instruction = { address: 0x1234 };
+  t.context.BNE(instruction);
+  t.is(t.context.registerPC, 0x1234);
+});
+
+test('should NOT branch when zero flag is set (BNE)', t => {
+  t.context.registerPC = 0;
+  t.context.registerP.zero = true;
+  const instruction = { address: 0x1234 };
+  t.context.BNE(instruction);
+  t.is(t.context.registerPC, 0);
+});
+
 test('should increase X register (INX)', t => {
   t.context.registerX = 0;
   t.context.INX();
