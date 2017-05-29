@@ -47,7 +47,7 @@ test('should transform register P, 0x00', t => {
   t.is(flags.zero, false);
   t.is(flags.interruptDisable, false);
   t.is(flags.decimal, false);
-  t.is(flags.unused1, false);
+  t.is(flags.unusedBreak, false);
   t.is(flags.unused2, false);
   t.is(flags.overflow, false);
   t.is(flags.negative, false);
@@ -62,7 +62,7 @@ test('should transform register P, 0xff', t => {
   t.is(flags.zero, true);
   t.is(flags.interruptDisable, true);
   t.is(flags.decimal, true);
-  t.is(flags.unused1, true);
+  t.is(flags.unusedBreak, true);
   t.is(flags.unused2, true);
   t.is(flags.overflow, true);
   t.is(flags.negative, true);
@@ -275,7 +275,7 @@ test('should pull processor register (PLP), 0xff', t => {
     interruptDisable: true,
     negative: true,
     overflow: false,
-    unused1: true,
+    unusedBreak: true,
     unused2: true,
     zero: false,
   });
@@ -290,7 +290,7 @@ test('should pull processor register (PLP), 0x00', t => {
     interruptDisable: true,
     negative: false,
     overflow: false,
-    unused1: true,
+    unusedBreak: true,
     unused2: true,
     zero: true,
   });
