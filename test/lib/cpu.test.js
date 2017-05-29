@@ -417,3 +417,21 @@ test('should correctly load Y (LDY)', t => {
   t.is(t.context.registerP.zero, false);
   t.is(t.context.registerP.negative, false);
 });
+
+test('should correctly enter and return from interrupt (BRK/RTI)', t => {
+  t.context.registerPC = 0x1234;
+  t.context.BRK();
+  t.context.RTI();
+  t.is(t.context.registerPC, 0x1234);
+});
+
+test('should correctly push and pull processor state (PHP/PLP)', t => {
+  t.context.registerP = Cpu.updateRegisterP(0xff);
+  const initialRegisterP = t.context.registerP;
+  initialRegisterP.unusedBreak = 0;
+  t.context.PHP();
+  t.context.PLP();
+  const postRegisterP = t.context.registerP;
+  postRegisterP.unusedBreak = 0;
+  t.deepEqual(initialRegisterP, postRegisterP);
+});
