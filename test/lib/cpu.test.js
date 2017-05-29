@@ -467,4 +467,67 @@ test('should not branch when negative flag is set (BPL)', t => {
   t.context.BPL(instruction);
   t.is(t.context.registerPC, 0xf00d);
 });
-//
+
+test('should branch when zero flag is set (BEQ)', t => {
+  t.context.registerPC = 0xf00d;
+  t.context.registerP.zero = true;
+  const instruction = { address: 0x1234 };
+  t.context.BEQ(instruction);
+  t.is(t.context.registerPC, 0x1234);
+});
+
+test('should not branch when zero flag is not set (BEQ)', t => {
+  t.context.registerPC = 0xf00d;
+  t.context.registerP.zero = false;
+  const instruction = { address: 0x1234 };
+  t.context.BEQ(instruction);
+  t.is(t.context.registerPC, 0xf00d);
+});
+
+test('should branch when negative flag is set (BMI)', t => {
+  t.context.registerPC = 0xf00d;
+  t.context.registerP.negative = true;
+  const instruction = { address: 0x1234 };
+  t.context.BMI(instruction);
+  t.is(t.context.registerPC, 0x1234);
+});
+
+test('should not branch when negative flag is not set (BMI)', t => {
+  t.context.registerPC = 0xf00d;
+  t.context.registerP.negative = false;
+  const instruction = { address: 0x1234 };
+  t.context.BMI(instruction);
+  t.is(t.context.registerPC, 0xf00d);
+});
+
+test('should branch when carry flag is set (BCS)', t => {
+  t.context.registerPC = 0xf00d;
+  t.context.registerP.carry = true;
+  const instruction = { address: 0x1234 };
+  t.context.BCS(instruction);
+  t.is(t.context.registerPC, 0x1234);
+});
+
+test('should not branch when carry flag is not set (BCS)', t => {
+  t.context.registerPC = 0xf00d;
+  t.context.registerP.carry = false;
+  const instruction = { address: 0x1234 };
+  t.context.BCS(instruction);
+  t.is(t.context.registerPC, 0xf00d);
+});
+
+test('should branch when carry flag is NOT set (BCC)', t => {
+  t.context.registerPC = 0xf00d;
+  t.context.registerP.carry = false;
+  const instruction = { address: 0x1234 };
+  t.context.BCC(instruction);
+  t.is(t.context.registerPC, 0x1234);
+});
+
+test('should not branch when carry flag is set (BCC)', t => {
+  t.context.registerPC = 0xf00d;
+  t.context.registerP.carry = true;
+  const instruction = { address: 0x1234 };
+  t.context.BCC(instruction);
+  t.is(t.context.registerPC, 0xf00d);
+});
