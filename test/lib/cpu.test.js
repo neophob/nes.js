@@ -344,6 +344,7 @@ test('should correctly ROL, accumulator mode', t => {
   t.is(t.context.registerA, 0x10 << 1);
   t.is(t.context.registerP.zero, false);
   t.is(t.context.registerP.negative, false);
+  t.is(t.context.registerP.carry, false);
 });
 
 test('should correctly ROL, mode != accumulator', t => {
@@ -353,6 +354,7 @@ test('should correctly ROL, mode != accumulator', t => {
   t.is(t.context.memory.read8(instruction.address), 0x10 << 1);
   t.is(t.context.registerP.zero, false);
   t.is(t.context.registerP.negative, false);
+  t.is(t.context.registerP.carry, false);
 });
 
 test('should correctly ROR, accumulator mode', t => {
@@ -362,6 +364,7 @@ test('should correctly ROR, accumulator mode', t => {
   t.is(t.context.registerA, 0x10 >>> 1);
   t.is(t.context.registerP.zero, false);
   t.is(t.context.registerP.negative, false);
+  t.is(t.context.registerP.carry, false);
 });
 
 test('should correctly ROR, accumulator mode, set zero flag', t => {
@@ -371,6 +374,17 @@ test('should correctly ROR, accumulator mode, set zero flag', t => {
   t.is(t.context.registerA, 0x1 >>> 1);
   t.is(t.context.registerP.zero, true);
   t.is(t.context.registerP.negative, false);
+  t.is(t.context.registerP.carry, true);
+});
+
+test('should correctly ROR, accumulator mode, set carry flag', t => {
+  const instruction = { mode: 'accumulator' };
+  t.context.registerA = 0x00;
+  t.context.ROR(instruction);
+  t.is(t.context.registerA, 0x1 >>> 1);
+  t.is(t.context.registerP.zero, true);
+  t.is(t.context.registerP.negative, false);
+  t.is(t.context.registerP.carry, false);
 });
 
 test('should correctly ROR, mode != accumulator', t => {
