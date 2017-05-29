@@ -563,3 +563,29 @@ test('should not branch when overflow flag is NOT set (BVS)', t => {
   t.context.BVS(instruction);
   t.is(t.context.registerPC, 0xf00d);
 });
+
+test('should add with carry (ADC)', t => {
+  const instruction = { address: 0x1234 };
+  t.context.memory.write8(instruction.address, 0x17);
+  t.context.registerA = 0x88;
+  t.context.registerP.carry = true;
+  t.context.ADC(instruction);
+  t.is(t.context.registerA, 0xa0);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, true);
+  t.is(t.context.registerP.carry, false);
+  t.is(t.context.registerP.overflow, false);
+});
+
+test('should add with carry (ADC), zero flag', t => {
+  const instruction = { address: 0x1234 };
+  t.context.memory.write8(instruction.address, 0x00);
+  t.context.registerA = 0x00;
+  t.context.registerP.carry = false;
+  t.context.ADC(instruction);
+  t.is(t.context.registerA, 0x00);
+  t.is(t.context.registerP.zero, true);
+  t.is(t.context.registerP.negative, false);
+  t.is(t.context.registerP.carry, false);
+  t.is(t.context.registerP.overflow, false);
+});
