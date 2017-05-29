@@ -45,7 +45,7 @@ test('should transform register P, 0x00', t => {
   const flags = Cpu.updateRegisterP(0);
   t.is(flags.carry, false);
   t.is(flags.zero, false);
-  t.is(flags.interrupt, false);
+  t.is(flags.interruptDisable, false);
   t.is(flags.decimal, false);
   t.is(flags.unused1, false);
   t.is(flags.unused2, false);
@@ -60,7 +60,7 @@ test('should transform register P, 0xff', t => {
   const flags = Cpu.updateRegisterP(0xff);
   t.is(flags.carry, true);
   t.is(flags.zero, true);
-  t.is(flags.interrupt, true);
+  t.is(flags.interruptDisable, true);
   t.is(flags.decimal, true);
   t.is(flags.unused1, true);
   t.is(flags.unused2, true);
@@ -272,7 +272,7 @@ test('should pull processor register (PLP), 0xff', t => {
   t.deepEqual(t.context.registerP, {
     carry: false,
     decimal: false,
-    interrupt: true,
+    interruptDisable: true,
     negative: true,
     overflow: false,
     unused1: true,
@@ -287,7 +287,7 @@ test('should pull processor register (PLP), 0x00', t => {
   t.deepEqual(t.context.registerP, {
     carry: false,
     decimal: false,
-    interrupt: true,
+    interruptDisable: true,
     negative: false,
     overflow: false,
     unused1: true,
