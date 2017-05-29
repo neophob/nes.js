@@ -34,7 +34,7 @@ test('should calculate the correct stack pointer address', t => {
   t.context.pushStack16(0xffaa);
   t.context.pushStack8(0);
   t.context.pushStack16(0);
-  t.is(t.context.registerSP, 0x100 - 5);
+  t.is(t.context.registerSP | 0x100, 0x200 - 5);
 });
 
 test('should transform register P, 0x00', t => {
@@ -291,4 +291,102 @@ test('should pull processor register (PLP), 0x00', t => {
     unused2: true,
     zero: true,
   });
+});
+
+test('should correctly push register A to stack (PHA)', t => {
+  t.context.registerA = 0xCC;
+  t.context.PHA();
+  t.is(t.context.popStack8(), 0xCC);
+});
+
+test('should correctly pop register A from stack (PLA)', t => {
+  t.context.pushStack8(0xCC);
+  t.context.PLA();
+  t.is(t.context.registerA, 0xCC);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, true);
+});
+
+test('should correctly pop register A from stack (PLA), zero flag', t => {
+  t.context.pushStack8(0x00);
+  t.context.PLA();
+  t.is(t.context.registerA, 0x00);
+  t.is(t.context.registerP.zero, true);
+  t.is(t.context.registerP.negative, false);
+});
+
+test('should correctly calculate logical OR (ORA)', t => {
+  t.context.registerPC = 0x1000;
+  const instruction = { address: 0x1234 };
+  t.context.memory.write8(instruction.address, 0xAA);
+  t.context.registerA = 0xCC;
+  t.context.ORA(instruction);
+  t.is(t.context.registerA, 0xCC | 0xAA);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, true);
+});
+
+test('should correctly calculate logical OR (ORA), zero flag', t => {
+  t.context.registerPC = 0x1000;
+  const instruction = { address: 0x1234 };
+  t.context.memory.write8(instruction.address, 0x00);
+  t.context.registerA = 0x00;
+  t.context.ORA(instruction);
+  t.is(t.context.registerA, 0x00 | 0x00);
+  t.is(t.context.registerP.zero, true);
+  t.is(t.context.registerP.negative, false);
+});
+
+test('should correctly ROL, accumulator mode', t => {
+  const instruction = { mode: 'accumulator' };
+  t.context.registerA = 0x10;
+  t.context.ROL(instruction);
+  t.is(t.context.registerA, 0x10 << 1);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, false);
+});
+
+test('should correctly ROL, mode != accumulator', t => {
+  const instruction = { mode: 'foo', address: 0x1234 };
+  t.context.memory.write8(instruction.address, 0x10);
+  t.context.ROL(instruction);
+  t.is(t.context.memory.read8(instruction.address), 0x10 << 1);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, false);
+});
+
+test('should correctly ROR, accumulator mode', t => {
+  const instruction = { mode: 'accumulator' };
+  t.context.registerA = 0x10;
+  t.context.ROR(instruction);
+  t.is(t.context.registerA, 0x10 >>> 1);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, false);
+});
+
+test('should correctly ROR, accumulator mode, set zero flag', t => {
+  const instruction = { mode: 'accumulator' };
+  t.context.registerA = 0x1;
+  t.context.ROR(instruction);
+  t.is(t.context.registerA, 0x1 >>> 1);
+  t.is(t.context.registerP.zero, true);
+  t.is(t.context.registerP.negative, false);
+});
+
+test('should correctly ROR, mode != accumulator', t => {
+  const instruction = { mode: 'foo', address: 0x1234 };
+  t.context.memory.write8(instruction.address, 0x10);
+  t.context.ROR(instruction);
+  t.is(t.context.memory.read8(instruction.address), 0x10 >>> 1);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, false);
+});
+
+test('should correctly ROR, mode != accumulator, zero', t => {
+  const instruction = { mode: 'foo', address: 0x1234 };
+  t.context.memory.write8(instruction.address, 0x1);
+  t.context.ROR(instruction);
+  t.is(t.context.memory.read8(instruction.address), 0x1 >>> 1);
+  t.is(t.context.registerP.zero, true);
+  t.is(t.context.registerP.negative, false);
 });
