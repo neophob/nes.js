@@ -70,7 +70,6 @@ test('should transform register P, 0xff', t => {
   t.is(t.context.getRegisterP(), 0xff);
 });
 
-
 test('should set zero and negative flags, 0x00', t => {
   t.context.setZeroAndNegativeFlag(0);
   const flags = t.context.registerP;
@@ -169,6 +168,24 @@ test('should increase Y register (INY) - overflow', t => {
   t.is(t.context.registerP.negative, false);
 });
 
+test('should decrease memory position (DEC)', t => {
+  const instruction = { address: 0x1234 };
+  t.context.memory.write8(instruction.address, 1);
+  t.context.DEC(instruction);
+  t.is(t.context.memory.read8(instruction.address), 0);
+  t.is(t.context.registerP.zero, true);
+  t.is(t.context.registerP.negative, false);
+});
+
+test('should increase memory position (INC)', t => {
+  const instruction = { address: 0x1234 };
+  t.context.memory.write8(instruction.address, 1);
+  t.context.INC(instruction);
+  t.is(t.context.memory.read8(instruction.address), 2);
+  t.is(t.context.registerP.zero,false);
+  t.is(t.context.registerP.negative, false);
+});
+
 test('should decrease X register (DEX)', t => {
   t.context.registerX = 1;
   t.context.DEX();
@@ -199,4 +216,50 @@ test('should decrease Y register (DEY) - overflow', t => {
   t.is(t.context.registerY, 255);
   t.is(t.context.registerP.zero, false);
   t.is(t.context.registerP.negative, true);
+});
+
+test('should pull register A (PLA), 0xff', t => {
+  t.context.pushStack8(0xff);
+  t.context.PLA();
+  t.is(t.context.registerA, 0xff);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, true);
+});
+
+test('should pull register A (PLA), 0x00', t => {
+  t.context.pushStack8(0x00);
+  t.context.PLA();
+  t.is(t.context.registerA, 0x00);
+  t.is(t.context.registerP.zero, true);
+  t.is(t.context.registerP.negative, false);
+});
+
+test('should pull processor register (PLP), 0xff', t => {
+  t.context.pushStack8(0xff);
+  t.context.PLA();
+  t.deepEqual(t.context.registerP, {
+    carry: false,
+    decimal: false,
+    interrupt: true,
+    negative: true,
+    overflow: false,
+    unused1: true,
+    unused2: true,
+    zero: false,
+  });
+});
+
+test('should pull processor register (PLP), 0x00', t => {
+  t.context.pushStack8(0x00);
+  t.context.PLA();
+  t.deepEqual(t.context.registerP, {
+    carry: false,
+    decimal: false,
+    interrupt: true,
+    negative: false,
+    overflow: false,
+    unused1: true,
+    unused2: true,
+    zero: true,
+  });
 });
