@@ -390,3 +390,30 @@ test('should correctly ROR, mode != accumulator, zero', t => {
   t.is(t.context.registerP.zero, true);
   t.is(t.context.registerP.negative, false);
 });
+
+test('should correctly load accumulator (LDA)', t => {
+  const instruction = { address: 0x1234 };
+  t.context.memory.write8(instruction.address, 0x17);
+  t.context.LDA(instruction);
+  t.is(t.context.registerA, 0x17);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, false);
+});
+
+test('should correctly load X (LDX)', t => {
+  const instruction = { address: 0x1234 };
+  t.context.memory.write8(instruction.address, 0x17);
+  t.context.LDX(instruction);
+  t.is(t.context.registerX, 0x17);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, false);
+});
+
+test('should correctly load Y (LDY)', t => {
+  const instruction = { address: 0x1234 };
+  t.context.memory.write8(instruction.address, 0x17);
+  t.context.LDY(instruction);
+  t.is(t.context.registerY, 0x17);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, false);
+});
