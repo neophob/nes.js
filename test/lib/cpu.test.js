@@ -531,3 +531,35 @@ test('should not branch when carry flag is set (BCC)', t => {
   t.context.BCC(instruction);
   t.is(t.context.registerPC, 0xf00d);
 });
+
+test('should branch when overflow flag is NOT set (BVC)', t => {
+  t.context.registerPC = 0xf00d;
+  t.context.registerP.overflow = false;
+  const instruction = { address: 0x1234 };
+  t.context.BVC(instruction);
+  t.is(t.context.registerPC, 0x1234);
+});
+
+test('should not branch when overflow flag is set (BVC)', t => {
+  t.context.registerPC = 0xf00d;
+  t.context.registerP.overflow = true;
+  const instruction = { address: 0x1234 };
+  t.context.BVC(instruction);
+  t.is(t.context.registerPC, 0xf00d);
+});
+
+test('should branch when overflow flag is set (BVS)', t => {
+  t.context.registerPC = 0xf00d;
+  t.context.registerP.overflow = true;
+  const instruction = { address: 0x1234 };
+  t.context.BVS(instruction);
+  t.is(t.context.registerPC, 0x1234);
+});
+
+test('should not branch when overflow flag is NOT set (BVS)', t => {
+  t.context.registerPC = 0xf00d;
+  t.context.registerP.overflow = false;
+  const instruction = { address: 0x1234 };
+  t.context.BVS(instruction);
+  t.is(t.context.registerPC, 0xf00d);
+});
