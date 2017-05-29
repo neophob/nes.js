@@ -7,7 +7,6 @@ test('should read file, read croom.nes', t => {
   return ines.loadRom('./rom/croom.nes')
     .then((result) => {
       const romMetaData = result.metaData;
-      console.log(romMetaData);
       t.is(romMetaData.programRomPages, 1);
       t.is(romMetaData.programRamPages, 1);
       t.is(romMetaData.characterRomPages, 1);
@@ -28,7 +27,6 @@ test('should read file, read thwaite.nes', t => {
   return ines.loadRom('./rom/thwaite.nes')
     .then((result) => {
       const romMetaData = result.metaData;
-      console.log(romMetaData);
       t.is(romMetaData.programRomPages, 1);
       t.is(romMetaData.programRamPages, 1);
       t.is(romMetaData.characterRomPages, 1);
@@ -43,7 +41,6 @@ test('should read file, read PwnAdventureZ-csaw-withkeys.nes', t => {
   return ines.loadRom('./rom/PwnAdventureZ-csaw-withkeys.nes')
     .then((result) => {
       const romMetaData = result.metaData;
-      console.log(romMetaData);
       t.is(romMetaData.programRomPages, 16);
       t.is(romMetaData.programRamPages, 1);
       t.is(romMetaData.characterRomPages, 0);

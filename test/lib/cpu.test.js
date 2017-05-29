@@ -234,6 +234,38 @@ test('should pull register A (PLA), 0x00', t => {
   t.is(t.context.registerP.negative, false);
 });
 
+test('should correctly return from routine (RTS)', t => {
+  t.context.pushStack16(0x1000);
+  t.context.RTS();
+  t.is(t.context.registerPC, 0x1001);
+});
+
+test('should correctly return from routine (RTS), overflow', t => {
+  t.context.pushStack16(0xffff);
+  t.context.RTS();
+  t.is(t.context.registerPC, 0x0000);
+});
+
+test('should correctly jump to new address (JMP)', t => {
+  const instruction = { address: 0x1234 };
+  t.context.JMP(instruction);
+  t.is(t.context.registerPC, instruction.address);
+});
+
+test('should correctly jump to new subroutine address (JSR)', t => {
+  const instruction = { address: 0x1234 };
+  t.context.JSR(instruction);
+  t.is(t.context.registerPC, instruction.address);
+});
+
+test('should correctly jump to new subroutine address (JSR/RTS)', t => {
+  t.context.registerPC = 0x1000;
+  const instruction = { address: 0x1234 };
+  t.context.JSR(instruction);
+  t.context.RTS(instruction);
+  t.is(t.context.registerPC, 0x1000);
+});
+
 test('should pull processor register (PLP), 0xff', t => {
   t.context.pushStack8(0xff);
   t.context.PLA();
