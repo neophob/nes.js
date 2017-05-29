@@ -435,3 +435,36 @@ test('should correctly push and pull processor state (PHP/PLP)', t => {
   postRegisterP.unusedBreak = 0;
   t.deepEqual(initialRegisterP, postRegisterP);
 });
+
+test('should branch when zero flag is not set (BNE)', t => {
+  t.context.registerPC = 0xf00d;
+  t.context.registerP.zero = false;
+  const instruction = { address: 0x1234 };
+  t.context.BNE(instruction);
+  t.is(t.context.registerPC, 0x1234);
+});
+
+test('should not branch when zero flag is set (BNE)', t => {
+  t.context.registerPC = 0xf00d;
+  t.context.registerP.zero = true;
+  const instruction = { address: 0x1234 };
+  t.context.BNE(instruction);
+  t.is(t.context.registerPC, 0xf00d);
+});
+
+test('should branch when negative flag is not set (BPL)', t => {
+  t.context.registerPC = 0xf00d;
+  t.context.registerP.negative = false;
+  const instruction = { address: 0x1234 };
+  t.context.BPL(instruction);
+  t.is(t.context.registerPC, 0x1234);
+});
+
+test('should not branch when negative flag is set (BPL)', t => {
+  t.context.registerPC = 0xf00d;
+  t.context.registerP.negative = true;
+  const instruction = { address: 0x1234 };
+  t.context.BPL(instruction);
+  t.is(t.context.registerPC, 0xf00d);
+});
+//
