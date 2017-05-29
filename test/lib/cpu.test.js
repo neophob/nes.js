@@ -603,3 +603,33 @@ test('should add with carry (ADC), zero flag', t => {
   t.is(t.context.registerP.carry, false);
   t.is(t.context.registerP.overflow, false);
 });
+
+test('should run BIT test, 0x00', t => {
+  const instruction = { address: 0x1234 };
+  t.context.registerA = 0x00;
+  t.context.memory.write8(instruction.address, 0x00);
+  t.context.BIT(instruction);
+  t.is(t.context.registerP.zero, true);
+  t.is(t.context.registerP.negative, false);
+  t.is(t.context.registerP.overflow, false);
+});
+
+test('should run BIT test, a=0, 0xff', t => {
+  const instruction = { address: 0x1234 };
+  t.context.registerA = 0x00;
+  t.context.memory.write8(instruction.address, 0xff);
+  t.context.BIT(instruction);
+  t.is(t.context.registerP.zero, true);
+  t.is(t.context.registerP.negative, true);
+  t.is(t.context.registerP.overflow, true);
+});
+
+test('should run BIT test, a=0x01, 0xff', t => {
+  const instruction = { address: 0x1234 };
+  t.context.registerA = 0x01;
+  t.context.memory.write8(instruction.address, 0xff);
+  t.context.BIT(instruction);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, true);
+  t.is(t.context.registerP.overflow, true);
+});
