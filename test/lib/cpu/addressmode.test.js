@@ -87,6 +87,16 @@ test('should read MODE_INDEXEDINDIRECT address', t => {
   t.is(result.pageCrossed, false);
 });
 
+test('should read MODE_INDEXEDINDIRECT address, wrap around', t => {
+  t.context.registerX = 0xff;
+  t.context.memory.write8(DEFAULT_REGISTERPC + 1, 0xff);
+  t.context.memory.write16(0xFE, 0x1155);
+  const instruction = { mode: MODE_INDEXEDINDIRECT };
+  const result = CpuAddressMode.getAddress(t.context, instruction);
+  t.is(result.address, 0x1155);
+  t.is(result.pageCrossed, false);
+});
+
 test('should read MODE_INDIRECT address', t => {
   t.context.memory.write16(DEFAULT_REGISTERPC + 1, 0xBEEF);
   t.context.memory.write16(0xBEEF, 0xF00D);
