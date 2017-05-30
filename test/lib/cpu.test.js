@@ -9,6 +9,20 @@ test.beforeEach(t => {
   t.context = new Cpu(memory);
 });
 
+test('should test setFlagsCompare', t => {
+  t.context.setFlagsCompare(0x10, 0x08);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, false);
+  t.is(t.context.registerP.carry, true);
+});
+
+test('should test setFlagsCompare', t => {
+  t.context.setFlagsCompare(0x00, 0x08);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, true);
+  t.is(t.context.registerP.carry, false);
+});
+
 test('should push and pop 8bit data to/from the stack, 0x00', t => {
   t.plan(2);
   t.context.pushStack8(0x00);
@@ -624,6 +638,45 @@ test('should add with carry (ADC), zero flag', t => {
   t.is(t.context.registerP.overflow, false);
 });
 
+test('should add with carry (ADC), overflow', t => {
+  const instruction = { address: 0x1234 };
+  t.context.memory.write8(instruction.address, 0xff);
+  t.context.registerA = 0x4;
+  t.context.registerP.carry = true;
+  t.context.ADC(instruction);
+  t.is(t.context.registerA, 0x04);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, false);
+  t.is(t.context.registerP.carry, true);
+  t.is(t.context.registerP.overflow, false);
+});
+
+test('should subtract with carry (SBC)', t => {
+  const instruction = { address: 0x1234 };
+  t.context.memory.write8(instruction.address, 0x17);
+  t.context.registerA = 0x18;
+  t.context.registerP.carry = false;
+  t.context.SBC(instruction);
+  t.is(t.context.registerA, 0x00);
+  t.is(t.context.registerP.zero, true);
+  t.is(t.context.registerP.negative, false);
+  t.is(t.context.registerP.carry, true);
+  t.is(t.context.registerP.overflow, false);
+});
+
+test('should subtract with carry (SBC), overflow', t => {
+  const instruction = { address: 0x1234 };
+  t.context.memory.write8(instruction.address, 0xff);
+  t.context.registerA = 0x18;
+  t.context.registerP.carry = false;
+  t.context.SBC(instruction);
+  t.is(t.context.registerA, 0x18);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, false);
+  t.is(t.context.registerP.carry, false);
+  t.is(t.context.registerP.overflow, false);
+});
+
 test('should run BIT test, 0x00', t => {
   const instruction = { address: 0x1234 };
   t.context.registerA = 0x00;
@@ -746,6 +799,26 @@ test('should run TYA, zero flag', t => {
 test('should run TYA, negative flag', t => {
   t.context.registerY = 0xff;
   t.context.TYA();
+  t.is(t.context.registerA, 0xff);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, true);
+});
+
+test('should run AND, zero flag', t => {
+  const instruction = { address: 0x1234 };
+  t.context.memory.write8(instruction.address, 0x00);
+  t.context.registerA = 0xff;
+  t.context.AND(instruction);
+  t.is(t.context.registerA, 0x00);
+  t.is(t.context.registerP.zero, true);
+  t.is(t.context.registerP.negative, false);
+});
+
+test('should run AND', t => {
+  const instruction = { address: 0x1234 };
+  t.context.memory.write8(instruction.address, 0xff);
+  t.context.registerA = 0xff;
+  t.context.AND(instruction);
   t.is(t.context.registerA, 0xff);
   t.is(t.context.registerP.zero, false);
   t.is(t.context.registerP.negative, true);
