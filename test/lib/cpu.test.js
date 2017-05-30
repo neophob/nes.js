@@ -843,3 +843,23 @@ test('should run EOR 0xff/0x00', t => {
   t.is(t.context.registerP.zero, false);
   t.is(t.context.registerP.negative, true);
 });
+
+test('should run LSR, accumulator mode', t => {
+  const instruction = { mode: 'accumulator' };
+  t.context.registerA = 0xff;
+  t.context.LSR(instruction);
+  t.is(t.context.registerA, 0x7f);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, false);
+  t.is(t.context.registerP.carry, true);
+});
+
+test('should run LSR, memory mode', t => {
+  const instruction = { mode: 'foo' };
+  t.context.memory.write8(instruction.address, 0xff);
+  t.context.LSR(instruction);
+  t.is(t.context.memory.read8(instruction.address), 0x7f);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, false);
+  t.is(t.context.registerP.carry, true);
+});
