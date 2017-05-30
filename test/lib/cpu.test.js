@@ -823,3 +823,23 @@ test('should run AND', t => {
   t.is(t.context.registerP.zero, false);
   t.is(t.context.registerP.negative, true);
 });
+
+test('should run EOR 0xff/0xff', t => {
+  const instruction = { address: 0x1234 };
+  t.context.memory.write8(instruction.address, 0xff);
+  t.context.registerA = 0xff;
+  t.context.EOR(instruction);
+  t.is(t.context.registerA, 0x00);
+  t.is(t.context.registerP.zero, true);
+  t.is(t.context.registerP.negative, false);
+});
+
+test('should run EOR 0xff/0x00', t => {
+  const instruction = { address: 0x1234 };
+  t.context.memory.write8(instruction.address, 0xff);
+  t.context.registerA = 0x00;
+  t.context.EOR(instruction);
+  t.is(t.context.registerA, 0xff);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, true);
+});
