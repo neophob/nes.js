@@ -5,9 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "ava --verbose",
-    "test:coverage": "nyc ava --verbose",
     "test:rom": "DEBUG=* node index.js testrom/nes_instr_test/rom_singles/01-implied.nes",
-    "coverage": "nyc report --reporter=html",
+    "coverage": "nyc ava && nyc report --reporter=html",
     "start": "DEBUG=* node index.js rom/croom.nes"
   },
   "author": "",
