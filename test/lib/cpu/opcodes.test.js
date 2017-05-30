@@ -37,3 +37,9 @@ test('build cpu instructions, check pageCycles', t => {
     t.is(result.pageCycles >= 0, true);
   }
 });
+
+test('should wrap opcodes > 0xff', t => {
+  const a = CpuOpcodes.getInstruction(0x00);
+  const b = CpuOpcodes.getInstruction(0x100);
+  t.deepEqual(a, b);
+});
