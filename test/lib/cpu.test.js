@@ -367,6 +367,16 @@ test('should correctly ROL, mode != accumulator', t => {
   t.is(t.context.registerP.carry, false);
 });
 
+test('should correctly ROL, mode != accumulator, overflow', t => {
+  const instruction = { mode: 'foo', address: 0x1234 };
+  t.context.memory.write8(instruction.address, 0xEE);
+  t.context.ROL(instruction);
+  t.is(t.context.memory.read8(instruction.address), 0xDC);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, true);
+  t.is(t.context.registerP.carry, true);
+});
+
 test('should correctly ROR, accumulator mode', t => {
   const instruction = { mode: 'accumulator' };
   t.context.registerA = 0x10;
