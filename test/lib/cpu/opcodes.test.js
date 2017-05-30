@@ -1,7 +1,7 @@
 'use strict';
 
 import test from 'ava';
-import CpuOpcodes from '../../lib/cpu.opcodes';
+import CpuOpcodes from '../../../lib/cpu/opcodes';
 
 test('build cpu instructions, check names', t => {
   for (let i = 0; i < 0xff; i++) {
