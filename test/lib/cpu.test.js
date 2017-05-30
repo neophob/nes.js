@@ -624,12 +624,109 @@ test('should run BIT test, a=0, 0xff', t => {
   t.is(t.context.registerP.overflow, true);
 });
 
-test('should run BIT test, a=0x01, 0xff', t => {
+test('should run STA', t => {
   const instruction = { address: 0x1234 };
   t.context.registerA = 0x01;
-  t.context.memory.write8(instruction.address, 0xff);
-  t.context.BIT(instruction);
+  t.context.STA(instruction);
+  t.is(t.context.memory.read8(instruction.address), 0x01);
+});
+
+test('should run STX', t => {
+  const instruction = { address: 0x1234 };
+  t.context.registerX = 0x01;
+  t.context.STX(instruction);
+  t.is(t.context.memory.read8(instruction.address), 0x01);
+});
+
+test('should run STY', t => {
+  const instruction = { address: 0x1234 };
+  t.context.registerY = 0x01;
+  t.context.STY(instruction);
+  t.is(t.context.memory.read8(instruction.address), 0x01);
+});
+
+test('should run TAX, zero flag', t => {
+  t.context.registerA = 0x00;
+  t.context.TAX();
+  t.is(t.context.registerX, 0x00);
+  t.is(t.context.registerP.zero, true);
+  t.is(t.context.registerP.negative, false);
+});
+
+test('should run TAX, negative flag', t => {
+  t.context.registerA = 0xff;
+  t.context.TAX();
+  t.is(t.context.registerX, 0xff);
   t.is(t.context.registerP.zero, false);
   t.is(t.context.registerP.negative, true);
-  t.is(t.context.registerP.overflow, true);
+});
+
+test('should run TAY, zero flag', t => {
+  t.context.registerA = 0x00;
+  t.context.TAY();
+  t.is(t.context.registerY, 0x00);
+  t.is(t.context.registerP.zero, true);
+  t.is(t.context.registerP.negative, false);
+});
+
+test('should run TAY, negative flag', t => {
+  t.context.registerA = 0xff;
+  t.context.TAY();
+  t.is(t.context.registerY, 0xff);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, true);
+});
+
+test('should run TSX, zero flag', t => {
+  t.context.registerSP = 0x00;
+  t.context.TSX();
+  t.is(t.context.registerX, 0x00);
+  t.is(t.context.registerP.zero, true);
+  t.is(t.context.registerP.negative, false);
+});
+
+test('should run TSX, negative flag', t => {
+  t.context.registerSP = 0xff;
+  t.context.TSX();
+  t.is(t.context.registerX, 0xff);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, true);
+});
+
+test('should run TXA, zero flag', t => {
+  t.context.registerX = 0x00;
+  t.context.TXA();
+  t.is(t.context.registerA, 0x00);
+  t.is(t.context.registerP.zero, true);
+  t.is(t.context.registerP.negative, false);
+});
+
+test('should run TXA, negative flag', t => {
+  t.context.registerX = 0xff;
+  t.context.TXA();
+  t.is(t.context.registerA, 0xff);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, true);
+});
+
+test('should run TXS', t => {
+  t.context.registerX = 0x42;
+  t.context.TXS();
+  t.is(t.context.registerSP, 0x42);
+});
+
+test('should run TYA, zero flag', t => {
+  t.context.registerY = 0x00;
+  t.context.TYA();
+  t.is(t.context.registerA, 0x00);
+  t.is(t.context.registerP.zero, true);
+  t.is(t.context.registerP.negative, false);
+});
+
+test('should run TYA, negative flag', t => {
+  t.context.registerY = 0xff;
+  t.context.TYA();
+  t.is(t.context.registerA, 0xff);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, true);
 });

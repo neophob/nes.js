@@ -187,3 +187,7 @@ test('should read MODE_ZEROPAGEY address, wrap around', t => {
   t.is(result.address, 0xfe);
   t.is(result.pageCrossed, false);
 });
+
+test('should fail to read file, invalid file', t => {
+  t.throws(() => { CpuAddressMode.getAddress(t.context, {}) }, /INVALID_ADDRESS_MODE/);
+});
