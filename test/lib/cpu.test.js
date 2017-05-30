@@ -863,3 +863,23 @@ test('should run LSR, memory mode', t => {
   t.is(t.context.registerP.negative, false);
   t.is(t.context.registerP.carry, true);
 });
+
+test('should run ASL, accumulator mode', t => {
+  const instruction = { mode: 'accumulator' };
+  t.context.registerA = 0xff;
+  t.context.ASL(instruction);
+  t.is(t.context.registerA, 0xfe);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, true);
+  t.is(t.context.registerP.carry, true);
+});
+
+test('should run ASL, memory mode', t => {
+  const instruction = { mode: 'foo' };
+  t.context.memory.write8(instruction.address, 0xff);
+  t.context.ASL(instruction);
+  t.is(t.context.memory.read8(instruction.address), 0xfe);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, true);
+  t.is(t.context.registerP.carry, true);
+});
