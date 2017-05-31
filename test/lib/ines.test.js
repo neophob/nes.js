@@ -53,3 +53,25 @@ test('should read file, read PwnAdventureZ-csaw-withkeys.nes', t => {
       t.is(romData.characterRom, undefined);
     });
 });
+
+test('should load 0x04000 size rom file', t => {
+  t.plan(6);
+  const memory = Buffer.from(new Uint8Array(65536));
+  const definedState = 0x88;
+  const programMemory = Buffer.alloc(16384).fill(definedState);
+  const rom = {
+    metaData: {
+      programRomPages: 1
+    },
+    data: {
+      programRom: programMemory
+    }
+  };
+  ines.copyRomToMemory(rom, memory);
+  t.is(memory.length, 65536);
+  t.is(memory[0x7fff] === definedState, false);
+  t.is(memory[0x8000], definedState);
+  t.is(typeof memory[0x8000], 'number');
+  t.is(memory[0x8000 + 0x4000], definedState);
+  t.is(memory[0xffff], definedState);
+});
