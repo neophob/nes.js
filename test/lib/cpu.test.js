@@ -855,7 +855,7 @@ test('should run LSR, accumulator mode', t => {
 });
 
 test('should run LSR, memory mode', t => {
-  const instruction = { mode: 'foo' };
+  const instruction = { address: 0x1234, mode: 'foo' };
   t.context.memory.write8(instruction.address, 0xff);
   t.context.LSR(instruction);
   t.is(t.context.memory.read8(instruction.address), 0x7f);
@@ -875,7 +875,7 @@ test('should run ASL, accumulator mode', t => {
 });
 
 test('should run ASL, memory mode', t => {
-  const instruction = { mode: 'foo' };
+  const instruction = { address: 0x1234, mode: 'foo' };
   t.context.memory.write8(instruction.address, 0xff);
   t.context.ASL(instruction);
   t.is(t.context.memory.read8(instruction.address), 0xfe);

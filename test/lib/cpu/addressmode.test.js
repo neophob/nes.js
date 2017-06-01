@@ -18,7 +18,7 @@ const MODE_ZEROPAGE = 'zeroPage';
 const MODE_ZEROPAGEX = 'zeroPageX';
 const MODE_ZEROPAGEY = 'zeroPageY';
 
-const DEFAULT_REGISTERPC = 0x1234;
+const DEFAULT_REGISTERPC = 0x0055;
 const DEFAULT_REGISTER_X_VALUE = 0x10;
 const DEFAULT_REGISTER_Y_VALUE = 0x00;
 
