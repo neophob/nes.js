@@ -27,7 +27,13 @@ test('should read RAM 0x1000, translate to 0x0000', t => {
   t.is(result.offset, 0);
 });
 
-test('should read PPU 0x2007', t => {
+test('should read PPU memory at 0x2006', t => {
+  const result = MemoryTranslate.getAddress(0x2006);
+  t.is(result.subsystem, 'ppu');
+  t.is(result.offset, 0x2006);
+});
+
+test('should read PPU memory at 0x2007', t => {
   const result = MemoryTranslate.getAddress(0x2007);
   t.is(result.subsystem, 'ppu');
   t.is(result.offset, 0x2007);
