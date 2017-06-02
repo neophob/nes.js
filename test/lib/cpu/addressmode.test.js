@@ -189,5 +189,5 @@ test('should read MODE_ZEROPAGEY address, wrap around', t => {
 });
 
 test('should fail to read file, invalid file', t => {
-  t.throws(() => { CpuAddressMode.getAddress(t.context, {}) }, /INVALID_ADDRESS_MODE/);
+  t.throws(() => { CpuAddressMode.getAddress(t.context, {}); }, /INVALID_ADDRESS_MODE/);
 });
