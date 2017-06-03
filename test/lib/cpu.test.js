@@ -4,8 +4,20 @@ import test from 'ava';
 import Cpu from '../../lib/cpu';
 import Memory from '../../lib/memory';
 
+const MAPPER_DUMMY_READ = 0x11AA;
+
 test.beforeEach(t => {
+  const mapper = {
+    mapperWrite: false,
+    write: function(offset) {
+      this.mapperWrite = offset;
+    },
+    read: function() {
+      return MAPPER_DUMMY_READ;
+    }
+  };
   const memory = new Memory();
+  memory.registerMapper(mapper);
   t.context = new Cpu(memory);
 });
 
@@ -126,13 +138,15 @@ test('should read correct IRQ value when calling BRK', t => {
   t.context.memory.write8(0xfffe, 0x10);
   t.context.memory.write8(0xffff, 0x50);
   t.context.BRK();
-  t.is(t.context.registerPC, 0x5010);
+  t.is(t.context.registerPC, MAPPER_DUMMY_READ);
+  t.is(t.context.memory.mapper.mapperWrite, 0xffff);
 });
 
 test('should read correct IRQ value when calling BRK', t => {
   t.context.memory.write16(0xfffe, 0x5010);
   t.context.BRK();
-  t.is(t.context.registerPC, 0x5010);
+  t.is(t.context.registerPC, MAPPER_DUMMY_READ);
+  t.is(t.context.memory.mapper.mapperWrite, 0xfffe);
 });
 
 test('should branch when zero flag is NOT set (BNE)', t => {

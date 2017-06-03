@@ -101,12 +101,12 @@ test('should not read memory at 0x5FFF', t => {
 
 test('should not read memory at 0x6000', t => {
   const result = MemoryTranslate.getAddress(0x6000);
-  t.is(result.subsystem, 'cpu');
+  t.is(result.subsystem, 'mapper');
   t.is(result.offset, 0x6000);
 });
 
 test('should not read memory at 0xFFFF', t => {
   const result = MemoryTranslate.getAddress(0xFFFF);
-  t.is(result.subsystem, 'cpu');
+  t.is(result.subsystem, 'mapper');
   t.is(result.offset, 0xFFFF);
 });
