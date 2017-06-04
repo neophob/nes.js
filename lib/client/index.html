@@ -1,0 +1,60 @@
+<html>
+<head>
+  <script src="/socket.io/socket.io.js"></script>
+  <style>
+    html, body { margin: 0; padding: 0; border: 0; }
+    #canvas { display: block; } /* kill scrollbars from hell */
+  </style>
+</head>
+<body>
+  <h1>NES RAM</h1>
+  <canvas id="canvas" width="128" height="200"></canvas>
+  <script>
+    var socket = io('http://localhost:8002');
+
+    socket.on('mem', function(data) {
+      draw(data);
+    });
+
+    var canvas;
+    var ctx;
+    var img;
+    var imgData;
+
+    function init() {
+      canvas = document.getElementById('canvas');
+      ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#000';
+      ctx.imageSmoothingEnabled = false;
+      ctx.fillRect(0, 0, 128, 100);
+      console.log('clear', ctx);
+      img = ctx.createImageData(128, 100);
+      imgData = new Uint8ClampedArray(128*100*4);
+    }
+
+    function draw(data) {
+      if (!canvas) {
+        return;
+      }
+      let offset=0;
+      var uint8Arr = new Uint8Array(data.rawData);
+      uint8Arr.forEach((pixel) => {
+        if (offset % 0xff === 0) {
+          imgData[offset++] = 0xff;
+          imgData[offset++] = 0x00;
+        } else {
+          imgData[offset++] = pixel;
+          imgData[offset++] = pixel;
+        }
+        imgData[offset++] = pixel;
+        imgData[offset++] = 0xff;
+      });
+      img.data.set(imgData); // assuming values 0..255, RGBA, pre-mult.
+      ctx.putImageData(img,0,0);
+    }
+
+    window.onload = init;
+
+  </script>
+</body>
+</html>

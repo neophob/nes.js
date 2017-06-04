@@ -5,17 +5,22 @@
   "main": "index.js",
   "scripts": {
     "test": "ava --verbose",
-    "test:rom": "DEBUG=* node index.js testrom/nes_instr_test/rom_singles/01-implied.nes",
+    "test:rom": "DEBUG='nes*' node index.js testrom/nes_instr_test/rom_singles/01-implied.nes",
     "coverage": "nyc ava && nyc report --reporter=html",
-    "start": "DEBUG=* node index.js rom/croom.nes"
+    "start": "DEBUG='nes*' node index.js rom/croom.nes"
   },
   "author": "",
   "license": "ISC",
+  "engines": {
+    "node": ">=6.0.0"
+  },
   "devDependencies": {
     "ava": "^0.19.1",
     "nyc": "^10.3.2"
   },
   "dependencies": {
-    "debug": "^2.6.8"
+    "debug": "^2.6.8",
+    "express": "^4.15.3",
+    "socket.io": "^2.0.2"
   }
 }
