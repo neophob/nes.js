@@ -8,12 +8,13 @@
 </head>
 <body>
   <h1>NES RAM</h1>
-  <canvas id="canvas" width="128" height="200"></canvas>
+  <canvas id="canvas" width="128" height="20"></canvas>
+
   <script>
     var socket = io('http://localhost:8002');
 
-    socket.on('mem', function(data) {
-      draw(data);
+    socket.on('dbg:mem', function(data) {
+      drawMem(data);
     });
 
     var canvas;
@@ -26,13 +27,13 @@
       ctx = canvas.getContext('2d');
       ctx.fillStyle = '#000';
       ctx.imageSmoothingEnabled = false;
-      ctx.fillRect(0, 0, 128, 100);
+      ctx.fillRect(0, 0, 128, 20);
       console.log('clear', ctx);
-      img = ctx.createImageData(128, 100);
-      imgData = new Uint8ClampedArray(128*100*4);
+      img = ctx.createImageData(128, 20);
+      imgData = new Uint8ClampedArray(128*20*4);
     }
 
-    function draw(data) {
+    function drawMem(data) {
       if (!canvas) {
         return;
       }

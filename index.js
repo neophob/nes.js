@@ -17,7 +17,7 @@ Nes.loadRom(romPath)
     setInterval(() => {
       let count = 240;
       while (count--) {
-        nes.executeCycle();        
+        nes.executeCycle();
       }
       client.sendMemData(nes.memory.ram);
     }, 1000/60);
