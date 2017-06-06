@@ -35,6 +35,37 @@ test('should test setFlagsCompare', t => {
   t.is(t.context.registerP.carry, false);
 });
 
+test('should not waste cycles when wasteCycles === 0', t => {
+  t.context.wasteCycles = 0;
+  t.context.executeCycle();
+  t.is(t.context.wasteCycles, 0);
+});
+
+test('should decrease waste cycles', t => {
+  t.context.wasteCycles = 5;
+  t.context.executeCycle();
+  t.context.executeCycle();
+  t.is(t.context.wasteCycles, 3);
+});
+
+test('should trigger NMI interrupt', t => {
+  t.context.triggerNMI();
+  t.is(t.context.wasteCycles, 0);
+  t.is(t.context.interruptPending, 0xfffa);
+  t.context.executeCycle();
+  t.is(t.context.wasteCycles, 7);
+  t.is(t.context.interruptPending, undefined);
+});
+
+test('should trigger IRQ interrupt', t => {
+  t.context.triggerIRQ();
+  t.is(t.context.wasteCycles, 0);
+  t.is(t.context.interruptPending, 0xfffe);
+  t.context.executeCycle();
+  t.is(t.context.wasteCycles, 7);
+  t.is(t.context.interruptPending, undefined);
+});
+
 test('should push and pop 8bit data to/from the stack, 0x00', t => {
   t.plan(2);
   t.context.pushStack8(0x00);
