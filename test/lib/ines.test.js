@@ -54,7 +54,7 @@ test('should read file, read PwnAdventureZ-csaw-withkeys.nes', t => {
     });
 });
 
-test('should load 0x04000 size rom file', t => {
+test.skip('should load 0x04000 size rom file', t => {
   t.plan(6);
   const memory = Buffer.from(new Uint8Array(65536));
   const definedState = 0x88;
