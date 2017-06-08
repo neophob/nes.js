@@ -98,7 +98,6 @@ test('should wrap around stack, push', t => {
 test('should wrap around stack, pop', t => {
   console.log('aaa');
   for (let i = 0; i < 0x100; i++) {
-    console.log('t.context.registerSP',t.context.registerSP);
     t.context.popStack8();
   }
   t.is(t.context.registerSP, 0xFD);
