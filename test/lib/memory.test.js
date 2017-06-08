@@ -73,6 +73,14 @@ test('should read from mapper memory (16b, 0xffff)', t => {
   t.is(t.context.mapper.mapperRead, offset);
 });
 
+test('should read from mapper memory, simulate cpu bug, (16b, 0xffff)', t => {
+  const offset = 0x06FF;
+  t.context.write8(offset, 0x34);
+  t.context.write8(0x0600, 0x12);
+  const result = t.context.read16Bug(offset);
+  t.is(result, 0x1234);
+});
+
 test('should write / read from remapped memory', t => {
   const offset = 0x1800;
   const value = 0x0F;
