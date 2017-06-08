@@ -515,7 +515,7 @@ test('should correctly enter and return from interrupt (BRK/RTI)', t => {
   t.context.registerPC = 0x1234;
   t.context.BRK();
   t.context.RTI();
-  t.is(t.context.registerPC, 0x1234);
+  t.is(t.context.registerPC, 0x1235);
 });
 
 test('should correctly push and pull processor state (PHP/PLP)', t => {
