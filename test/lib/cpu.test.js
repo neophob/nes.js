@@ -19,6 +19,7 @@ test.beforeEach(t => {
   const memory = new Memory();
   memory.registerMapper(mapper);
   t.context = new Cpu(memory);
+  t.context.reset();
 });
 
 test('should test setFlagsCompare', t => {
@@ -70,28 +71,44 @@ test('should push and pop 8bit data to/from the stack, 0x00', t => {
   t.plan(2);
   t.context.pushStack8(0x00);
   t.is(t.context.popStack8(), 0x00);
-  t.is(t.context.registerSP, 0x100);
+  t.is(t.context.registerSP, 0xFD);
 });
 
 test('should push and pop 8bit data to/from the stack, 0xfff', t => {
   t.plan(2);
   t.context.pushStack8(0xfff);
   t.is(t.context.popStack8(), 0xff);
-  t.is(t.context.registerSP, 0x100);
+  t.is(t.context.registerSP, 0xFD);
 });
 
 test('should push and pop 16bit data to/from the stack', t => {
   t.plan(2);
   t.context.pushStack16(0xffaa);
   t.is(t.context.popStack16(), 0xffaa);
-  t.is(t.context.registerSP, 0x100);
+  t.is(t.context.registerSP, 0xFD);
+});
+
+test('should wrap around stack, push', t => {
+  for (let i = 0; i < 0x100; i++) {
+    t.context.pushStack8(0xaa);
+  }
+  t.is(t.context.registerSP, 0xFD);
+});
+
+test('should wrap around stack, pop', t => {
+  console.log('aaa');
+  for (let i = 0; i < 0x100; i++) {
+    console.log('t.context.registerSP',t.context.registerSP);
+    t.context.popStack8();
+  }
+  t.is(t.context.registerSP, 0xFD);
 });
 
 test('should calculate the correct stack pointer address', t => {
   t.context.pushStack16(0xffaa);
   t.context.pushStack8(0);
   t.context.pushStack16(0);
-  t.is(t.context.registerSP | 0x100, 0x200 - 5);
+  t.is(t.context.registerSP, 0xF8);
 });
 
 test('should transform register P, 0x00', t => {
@@ -331,7 +348,7 @@ test('should pull processor register (PLP), 0xff', t => {
     interruptDisable: true,
     negative: true,
     overflow: false,
-    unusedBreak: true,
+    unusedBreak: false,
     unused2: true,
     zero: false,
   });
@@ -346,7 +363,7 @@ test('should pull processor register (PLP), 0x00', t => {
     interruptDisable: true,
     negative: false,
     overflow: false,
-    unusedBreak: true,
+    unusedBreak: false,
     unused2: true,
     zero: true,
   });
