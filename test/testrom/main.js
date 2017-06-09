@@ -2,17 +2,20 @@
 
 const testrunner = require('./testrunner');
 
-//TODO: what the difference between instr_test-v3 and nes_instr_test?
 const cpuTests = [
-//  './testrom/instr_misc/rom_singles/01-abs_x_wrap.nes',
-//  './testrom/instr_misc/rom_singles/02-branch_wrap.nes',
+  './testrom/instr_test-v4/rom_singles/01-basics.nes',
+  './testrom/instr_test-v4/rom_singles/02-implied.nes',
+  './testrom/instr_test-v4/rom_singles/10-branches.nes',
+  './testrom/instr_test-v4/rom_singles/11-stack.nes',
+  './testrom/instr_test-v4/rom_singles/12-jmp_jsr.nes',
+  './testrom/instr_test-v4/rom_singles/13-rts.nes',
+  './testrom/instr_test-v4/rom_singles/14-rti.nes',
+  './testrom/instr_test-v4/rom_singles/15-brk.nes',
+  './testrom/instr_test-v4/rom_singles/16-special.nes',
+
+  './testrom/instr_misc/rom_singles/01-abs_x_wrap.nes',
   './testrom/instr_misc/rom_singles/03-dummy_reads.nes',
   './testrom/instr_misc/rom_singles/04-dummy_reads_apu.nes',
-
-  './testrom/nes_instr_test/rom_singles/01-implied.nes',
-  './testrom/nes_instr_test/rom_singles/09-branches.nes',
-  './testrom/nes_instr_test/rom_singles/10-stack.nes',
-  './testrom/nes_instr_test/rom_singles/11-special.nes',
 
   './testrom/cpu_interrupts_v2/rom_singles/1-cli_latency.nes',
   './testrom/cpu_interrupts_v2/rom_singles/2-nmi_and_brk.nes',
@@ -23,15 +26,19 @@ const cpuTests = [
 /*
 hangs,
 
+Probably something systemic. Is your emulator generating any interrupts during the tests? That would modify the stack and cause failure. NMI and /IRQ should not be occurring during the tests.
 The tests shouldn't rely on anything from the PPU. At the most, they might need $2002 to wait for VBL, but the symptom of that would be a hang, not a failure. Later versions don't require a PPU at all (I'm pretty sure I got that released).
 
-  './testrom/nes_instr_test/rom_singles/02-immediate.nes',
-  './testrom/nes_instr_test/rom_singles/03-zero_page.nes',
-  './testrom/nes_instr_test/rom_singles/04-zp_xy.nes',
-  './testrom/nes_instr_test/rom_singles/05-absolute.nes',
-  './testrom/nes_instr_test/rom_singles/06-abs_xy.nes',
-  './testrom/nes_instr_test/rom_singles/07-ind_x.nes',
-  './testrom/nes_instr_test/rom_singles/08-ind_y.nes',
+  './testrom/instr_test-v4/rom_singles/03-immediate.nes',
+  './testrom/instr_test-v4/rom_singles/03-immediate.nes',
+  './testrom/instr_test-v4/rom_singles/04-zero_page.nes',
+  './testrom/instr_test-v4/rom_singles/05-zp_xy.nes',
+  './testrom/instr_test-v4/rom_singles/06-absolute.nes',
+  './testrom/instr_test-v4/rom_singles/07-abs_xy.nes',
+  './testrom/instr_test-v4/rom_singles/08-ind_x.nes',
+  './testrom/instr_test-v4/rom_singles/09-ind_y.nes',
+
+  './testrom/instr_misc/rom_singles/02-branch_wrap.nes',
 
   './testrom/cpu_interrupts_v2/rom_singles/5-branch_delays_irq.nes',
 
@@ -40,8 +47,8 @@ The tests shouldn't rely on anything from the PPU. At the most, they might need 
   './testrom/cpu_reset/registers.nes',
   './testrom/cpu_reset/ram_after_reset.nes',
 
-  './testrom/oam_stress/oam_stress.nes',
   './testrom/oam_read/oam_read.nes',
+  './testrom/oam_stress/oam_stress.nes',
 
 
   */
@@ -68,52 +75,20 @@ cpuTests.reduce((cur, test) => {
 
 /*
 
-RUN TEST ./testrom/nes_instr_test/rom_singles/03-zero_page.nes
-65 ADC z
-E5 SBC z
-
-
-04-zp_xy.nes
-
-75 ADC z,X
-F5 SBC z,X
-
-
-RUN TEST ./testrom/nes_instr_test/rom_singles/06-abs_xy.nes
-
-7D ADC a,X
-79 ADC a,Y
-FD SBC a,X
-F9 SBC a,Y
-
-______RUN TEST ./testrom/nes_instr_test/rom_singles/10-stack.nes __________________________________
+______RUN TEST ./testrom/instr_misc/rom_singles/01-abs_x_wrap.nes __________________________________
 OUTPUT RC: 0
-OUTPUT TXT: 48 PHA
-OUTPUT RC: 0
-OUTPUT TXT: 48 PHA
-08 PHP
-OUTPUT RC: 0
-OUTPUT TXT: 48 PHA
-08 PHP
+OUTPUT TXT:
+ Write wrap-around failed
 
-10-stack
+01-abs_x_wrap
 
-Failed
-TEST FAILED ./testrom/nes_instr_test/rom_singles/10-stack.nes
-______RUN TEST ./testrom/nes_instr_test/rom_singles/11-special.nes __________________________________
-OUTPUT RC: 0
-OUTPUT TXT: JMP ($6FF) should get high byte from $600
+Failed #2
 
-11-special
-
-Failed #3
 
 ______RUN TEST ./testrom/instr_misc/rom_singles/03-dummy_reads.nes __________________________________
 OUTPUT RC: 0
-OUTPUT TXT: LDA abs,x
+OUTPUT TXT:
+ LDA abs,x
 
-03-dummy_reads
-
-Failed #3
 
 */

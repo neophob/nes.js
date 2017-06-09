@@ -699,17 +699,30 @@ test('should add with carry (ADC), zero flag', t => {
   t.is(t.context.registerP.overflow, false);
 });
 
-test('should add with carry (ADC), overflow', t => {
+test('should add with carry (ADC), overflow (carry flag)', t => {
   const instruction = { address: 0x1234 };
-  t.context.memory.write8(instruction.address, 0xff);
-  t.context.registerA = 0x4;
+  t.context.memory.write8(instruction.address, 0xaa);
+  t.context.registerA = 0xcc;
   t.context.registerP.carry = true;
   t.context.ADC(instruction);
-  t.is(t.context.registerA, 0x04);
+  t.is(t.context.registerA, 119);
   t.is(t.context.registerP.zero, false);
   t.is(t.context.registerP.negative, false);
   t.is(t.context.registerP.carry, true);
-  t.is(t.context.registerP.overflow, false);
+  t.is(t.context.registerP.overflow, true);
+});
+
+test('should add with carry (ADC), overflow', t => {
+  const instruction = { address: 0x1234 };
+  t.context.memory.write8(instruction.address, 0x64);
+  t.context.registerA = 0x64;
+  t.context.registerP.carry = true;
+  t.context.ADC(instruction);
+  t.is(t.context.registerA, 0xC9);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, true);
+  t.is(t.context.registerP.carry, false);
+  t.is(t.context.registerP.overflow, true);
 });
 
 test('should subtract with carry (SBC)', t => {
@@ -718,10 +731,10 @@ test('should subtract with carry (SBC)', t => {
   t.context.registerA = 0x18;
   t.context.registerP.carry = false;
   t.context.SBC(instruction);
-  t.is(t.context.registerA, 0x00);
-  t.is(t.context.registerP.zero, true);
+  t.is(t.context.registerA, 0x01);
+  t.is(t.context.registerP.zero, false);
   t.is(t.context.registerP.negative, false);
-  t.is(t.context.registerP.carry, true);
+  t.is(t.context.registerP.carry, false);
   t.is(t.context.registerP.overflow, false);
 });
 
@@ -731,7 +744,7 @@ test('should subtract with carry (SBC), overflow', t => {
   t.context.registerA = 0x18;
   t.context.registerP.carry = false;
   t.context.SBC(instruction);
-  t.is(t.context.registerA, 0x18);
+  t.is(t.context.registerA, 0x19);
   t.is(t.context.registerP.zero, false);
   t.is(t.context.registerP.negative, false);
   t.is(t.context.registerP.carry, false);
