@@ -14,6 +14,7 @@ const cpuTests = [
   './testrom/instr_test-v4/rom_singles/16-special.nes',
 
   './testrom/instr_misc/rom_singles/01-abs_x_wrap.nes',
+  './testrom/instr_misc/rom_singles/02-branch_wrap.nes',
   './testrom/instr_misc/rom_singles/03-dummy_reads.nes',
   './testrom/instr_misc/rom_singles/04-dummy_reads_apu.nes',
 
@@ -30,15 +31,12 @@ Probably something systemic. Is your emulator generating any interrupts during t
 The tests shouldn't rely on anything from the PPU. At the most, they might need $2002 to wait for VBL, but the symptom of that would be a hang, not a failure. Later versions don't require a PPU at all (I'm pretty sure I got that released).
 
   './testrom/instr_test-v4/rom_singles/03-immediate.nes',
-  './testrom/instr_test-v4/rom_singles/03-immediate.nes',
   './testrom/instr_test-v4/rom_singles/04-zero_page.nes',
   './testrom/instr_test-v4/rom_singles/05-zp_xy.nes',
   './testrom/instr_test-v4/rom_singles/06-absolute.nes',
   './testrom/instr_test-v4/rom_singles/07-abs_xy.nes',
   './testrom/instr_test-v4/rom_singles/08-ind_x.nes',
   './testrom/instr_test-v4/rom_singles/09-ind_y.nes',
-
-  './testrom/instr_misc/rom_singles/02-branch_wrap.nes',
 
   './testrom/cpu_interrupts_v2/rom_singles/5-branch_delays_irq.nes',
 
