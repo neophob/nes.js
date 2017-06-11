@@ -143,7 +143,7 @@ test('should read MODE_RELATIVE address, negative -128', t => {
   t.context.memory.write8(DEFAULT_REGISTERPC + 1, 0x80);
   const instruction = { mode: MODE_RELATIVE };
   const result = CpuAddressMode.getAddress(t.context, instruction);
-  t.is(result.address, DEFAULT_REGISTERPC + 2 - 0x80);
+  t.is(result.address, 0xFFD7);
   t.is(result.pageCrossed, false);
 });
 
