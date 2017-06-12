@@ -96,7 +96,6 @@ test('should wrap around stack, push', t => {
 });
 
 test('should wrap around stack, pop', t => {
-  console.log('aaa');
   for (let i = 0; i < 0x100; i++) {
     t.context.popStack8();
   }
