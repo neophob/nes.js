@@ -48,8 +48,13 @@ function runNesMainloop(nes, resultSet) {
                   fixedSizeString(5, 'Y:' + fixedSizeHexNumber(nes.cpu.registerY)) +
                   fixedSizeString(5, 'P:' + fixedSizeHexNumber(nes.cpu.getRegisterP())) +
                   fixedSizeString(6, 'SP:' + fixedSizeHexNumber(nes.cpu.registerSP));
+
+    let pc = lastPC.toString(16).toUpperCase();
+    while (pc.length < 4) {
+      pc = '0' + pc;
+    }
     return {
-      pc: lastPC.toString(16).toUpperCase(),
+      pc,
       opcodes: opcodes.toUpperCase(),
       instruction: nextInstruction.instruction.name,
       flags
@@ -58,9 +63,10 @@ function runNesMainloop(nes, resultSet) {
 
   function compare(expected, actual, value) {
     if (expected.trim() !== actual.trim()) {
-      console.log('DIFF Line '+ofs, 'Value:', value);
+      console.log('NESTEST DIFF Line '+ofs, 'Value:', value);
       console.log(' expected:', expected);
       console.log(' actual  :', actual);
+      throw new Error('ERR');
     }
   }
 
@@ -73,7 +79,7 @@ function runNesMainloop(nes, resultSet) {
       compare(expectedResult.pc, actualResult.pc, 'PC');
       compare(expectedResult.opcodes, actualResult.opcodes, 'opcodes');
       compare(expectedResult.flags, actualResult.flags, 'flags');
-//      instruction: nextInstruction.instruction.name,
+      //TODO compare instruction - but will fail due the illegal nes op codes
 
       nes.cpu.executeCycle();
       nes.ppu.executeCycle();
@@ -96,7 +102,7 @@ function runNesMainloop(nes, resultSet) {
 }
 
 function loadNestestTraceFile() {
-  const RESULT_REGEX = /(.{6})(.{10})(.{32})(.{25})/;
+  const RESULT_REGEX = /(.{6})(.{9})(.{33})(.{25})/;
   const tempArray = fs.readFileSync('./testrom/other/nestest.log').toString().split('\n');
   return tempArray.map((line) => {
     const resultGroups = line.match(RESULT_REGEX);
@@ -112,7 +118,7 @@ function loadNestestTraceFile() {
   });
 }
 
-test.only('should run NESTEST.NES', t => {
+test('should run NESTEST.NES', t => {
   const romPath = './testrom/other/nestest.nes';
   const resultSet = loadNestestTraceFile();
   return Nes.loadRom(romPath)

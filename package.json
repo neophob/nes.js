@@ -4,8 +4,9 @@
   "description": "NES Emu",
   "main": "index.js",
   "scripts": {
-    "test": "ava --verbose",
-    "test:rom": "node test/testrom/main.js",
+    "test": "ava --verbose test/lib/**/*.test.js test/lib/*.test.js",
+    "test:nestest": "ava --verbose test/testrom/**/*.test.js test/testrom/*.test.js",
+    "test:blargg": "node test/testrom/blargg/main.js",
     "coverage": "nyc ava && nyc report --reporter=html",
     "start": "DEBUG='nes*' node index.js rom/croom.nes",
     "debug": "node --inspect --debug-brk index.js rom/croom.nes"

@@ -1,6 +1,6 @@
 'use strict';
 
-const Nes = require('../../lib/nes');
+const Nes = require('../../../lib/nes');
 
 const NTSC_REFRESHRATE = 60;
 const NTSC_INTERVAL = 1000 / NTSC_REFRESHRATE;
