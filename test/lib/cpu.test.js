@@ -725,7 +725,7 @@ test('should add with carry (ADC), overflow', t => {
   t.is(t.context.registerP.overflow, true);
 });
 
-test('should subtract with carry (SBC)', t => {
+test('should subtract without carry (SBC)', t => {
   const instruction = { address: 0x1234 };
   t.context.memory.write8(instruction.address, 0x17);
   t.context.registerA = 0x18;
@@ -735,7 +735,20 @@ test('should subtract with carry (SBC)', t => {
   t.is(t.context.registerA, 0x00);
   t.is(t.context.registerP.zero, true);
   t.is(t.context.registerP.negative, false);
-  t.is(t.context.registerP.carry, false);
+  t.is(t.context.registerP.carry, true);
+  t.is(t.context.registerP.overflow, false);
+});
+
+test('should subtract with carry (SBC)', t => {
+  const instruction = { address: 0x1234 };
+  t.context.memory.write8(instruction.address, 0x17);
+  t.context.registerA = 0x18;
+  t.context.registerP.carry = true;
+  t.context.SBC(instruction);
+  t.is(t.context.registerA, 0x01);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, false);
+  t.is(t.context.registerP.carry, true);
   t.is(t.context.registerP.overflow, false);
 });
 
@@ -747,6 +760,32 @@ test('should subtract with carry (SBC), overflow', t => {
   t.context.SBC(instruction);
   //TODO correct, 0x18?
   t.is(t.context.registerA, 0x18);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, false);
+  t.is(t.context.registerP.carry, false);
+  t.is(t.context.registerP.overflow, false);
+});
+
+test('should subtract with carry (SBC), 0x00', t => {
+  const instruction = { address: 0x1234 };
+  t.context.memory.write8(instruction.address, 0x00);
+  t.context.registerA = 0xff;
+  t.context.registerP.carry = true;
+  t.context.SBC(instruction);
+  t.is(t.context.registerA, 0xff);
+  t.is(t.context.registerP.zero, false);
+  t.is(t.context.registerP.negative, true);
+  t.is(t.context.registerP.carry, true);
+  t.is(t.context.registerP.overflow, false);
+});
+
+test('should subtract with carry (SBC), 0xff', t => {
+  const instruction = { address: 0x1234 };
+  t.context.memory.write8(instruction.address, 0xff);
+  t.context.registerA = 0x00;
+  t.context.registerP.carry = true;
+  t.context.SBC(instruction);
+  t.is(t.context.registerA, 0x01);
   t.is(t.context.registerP.zero, false);
   t.is(t.context.registerP.negative, false);
   t.is(t.context.registerP.carry, false);

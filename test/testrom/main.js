@@ -3,15 +3,22 @@
 const testrunner = require('./testrunner');
 
 const cpuTests = [
-  './testrom/instr_test-v4/rom_singles/01-basics.nes',
-  './testrom/instr_test-v4/rom_singles/02-implied.nes',
-  './testrom/instr_test-v4/rom_singles/10-branches.nes',
-  './testrom/instr_test-v4/rom_singles/11-stack.nes',
-  './testrom/instr_test-v4/rom_singles/12-jmp_jsr.nes',
-  './testrom/instr_test-v4/rom_singles/13-rts.nes',
-  './testrom/instr_test-v4/rom_singles/14-rti.nes',
-  './testrom/instr_test-v4/rom_singles/15-brk.nes',
-  './testrom/instr_test-v4/rom_singles/16-special.nes',
+  './testrom/instr_test-v5/rom_singles/01-basics.nes',
+  './testrom/instr_test-v5/rom_singles/02-implied.nes',
+  './testrom/instr_test-v5/rom_singles/03-immediate.nes',
+  './testrom/instr_test-v5/rom_singles/04-zero_page.nes',
+  './testrom/instr_test-v5/rom_singles/05-zp_xy.nes',
+  './testrom/instr_test-v5/rom_singles/06-absolute.nes',
+  './testrom/instr_test-v5/rom_singles/07-abs_xy.nes',
+  './testrom/instr_test-v5/rom_singles/08-ind_x.nes',
+  './testrom/instr_test-v5/rom_singles/09-ind_y.nes',
+  './testrom/instr_test-v5/rom_singles/10-branches.nes',
+  './testrom/instr_test-v5/rom_singles/11-stack.nes',
+  './testrom/instr_test-v5/rom_singles/12-jmp_jsr.nes',
+  './testrom/instr_test-v5/rom_singles/13-rts.nes',
+  './testrom/instr_test-v5/rom_singles/14-rti.nes',
+  './testrom/instr_test-v5/rom_singles/15-brk.nes',
+  './testrom/instr_test-v5/rom_singles/16-special.nes',
 
   './testrom/instr_misc/rom_singles/01-abs_x_wrap.nes',
   './testrom/instr_misc/rom_singles/02-branch_wrap.nes',
@@ -30,13 +37,6 @@ hangs,
 Probably something systemic. Is your emulator generating any interrupts during the tests? That would modify the stack and cause failure. NMI and /IRQ should not be occurring during the tests.
 The tests shouldn't rely on anything from the PPU. At the most, they might need $2002 to wait for VBL, but the symptom of that would be a hang, not a failure. Later versions don't require a PPU at all (I'm pretty sure I got that released).
 
-  './testrom/instr_test-v4/rom_singles/03-immediate.nes',
-  './testrom/instr_test-v4/rom_singles/04-zero_page.nes',
-  './testrom/instr_test-v4/rom_singles/05-zp_xy.nes',
-  './testrom/instr_test-v4/rom_singles/06-absolute.nes',
-  './testrom/instr_test-v4/rom_singles/07-abs_xy.nes',
-  './testrom/instr_test-v4/rom_singles/08-ind_x.nes',
-  './testrom/instr_test-v4/rom_singles/09-ind_y.nes',
 
   './testrom/cpu_interrupts_v2/rom_singles/5-branch_delays_irq.nes',
 
