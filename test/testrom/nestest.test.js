@@ -80,6 +80,7 @@ function runNesMainloop(nes, resultSet) {
       compare(expectedResult.opcodes, actualResult.opcodes, 'opcodes');
       compare(expectedResult.flags, actualResult.flags, 'flags');
       //TODO compare instruction - but will fail due the illegal nes op codes
+      //TODO compare ppu
 
       nes.cpu.executeCycle();
       nes.ppu.executeCycle();
@@ -102,7 +103,7 @@ function runNesMainloop(nes, resultSet) {
 }
 
 function loadNestestTraceFile() {
-  const RESULT_REGEX = /(.{6})(.{9})(.{33})(.{25})/;
+  const RESULT_REGEX = /(.{6})(.{9})(.{33})(.{25})(.*)/;
   const tempArray = fs.readFileSync('./testrom/other/nestest.log').toString().split('\n');
   return tempArray.map((line) => {
     const resultGroups = line.match(RESULT_REGEX);
@@ -113,7 +114,8 @@ function loadNestestTraceFile() {
       pc: resultGroups[1].trim(),
       opcodes: resultGroups[2].trim(),
       detail: resultGroups[3].trim(),
-      flags: resultGroups[4].trim()
+      flags: resultGroups[4].trim(),
+      ppu: resultGroups[5].trim()
     };
   });
 }

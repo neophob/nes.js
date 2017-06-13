@@ -30,5 +30,6 @@ Nes.loadRom(romPath)
     runNesMainloop(nes);
   })
   .catch((error) => {
-    console.log('loading rom failed', error);
+    console.log('EXCEPTION! Hint: make sure to run with node6+');
+    console.log(error.stack);
   });
