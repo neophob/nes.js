@@ -3,6 +3,19 @@
 const testrunner = require('./testrunner');
 
 const cpuTests = [
+
+//  './testrom/ppu_vbl_nmi/rom_singles/01-vbl_basics.nes',
+//  './testrom/ppu_vbl_nmi/rom_singles/02-vbl_set_time.nes',
+//  './testrom/ppu_vbl_nmi/rom_singles/03-vbl_clear_time.nes',
+  './testrom/ppu_vbl_nmi/rom_singles/04-nmi_control.nes',
+  //'./testrom/ppu_vbl_nmi/rom_singles/05-nmi_timing.nes',
+  './testrom/ppu_vbl_nmi/rom_singles/06-suppression.nes',
+  './testrom/ppu_vbl_nmi/rom_singles/07-nmi_on_timing.nes',
+  './testrom/ppu_vbl_nmi/rom_singles/08-nmi_off_timing.nes',
+  './testrom/ppu_vbl_nmi/rom_singles/09-even_odd_frames.nes',
+  './testrom/ppu_vbl_nmi/rom_singles/10-even_odd_timing.nes',
+  './testrom/ppu_open_bus/ppu_open_bus.nes',
+
   './testrom/instr_test-v5/rom_singles/01-basics.nes',
   './testrom/instr_test-v5/rom_singles/02-implied.nes',
   './testrom/instr_test-v5/rom_singles/10-branches.nes',
