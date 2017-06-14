@@ -4,7 +4,7 @@ const testrunner = require('./testrunner');
 
 const cpuTests = [
 
-//  './testrom/ppu_vbl_nmi/rom_singles/01-vbl_basics.nes',
+  './testrom/ppu_vbl_nmi/rom_singles/01-vbl_basics.nes',
 //  './testrom/ppu_vbl_nmi/rom_singles/02-vbl_set_time.nes',
 //  './testrom/ppu_vbl_nmi/rom_singles/03-vbl_clear_time.nes',
   './testrom/ppu_vbl_nmi/rom_singles/04-nmi_control.nes',
